@@ -73,7 +73,7 @@ include("look.php");
 
                 $.ajax({
                     type: "POST",
-                    url: "lg.php",
+                    url: "look.php",
                     data: dataString,
                     success: function(result) {
                         $('#result_area').html(result);

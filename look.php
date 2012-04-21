@@ -1,9 +1,9 @@
 <?php
 
 # get config file
-include("lookg-cfg.php");
+include("look-cfg.php");
 
-include("lookg-cisco.php");
+include("look-cisco.php");
 
 class DeviceCommand {
     private static $last_id = -1;
@@ -149,7 +149,6 @@ class BaseDevice {
             // validate argument
             if($cmd_obj->valid_arg($arg_type, $arg)) {
                 if($arg_type == "device") {
-                    echo "index: $arg";
                     $arg = $GLOBALS["devices"][$arg]->hostname;
                 }
 
