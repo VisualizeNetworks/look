@@ -268,7 +268,6 @@ foreach($device_cfg as $device_index => $device) {
 // the page was called from the HTML form
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     // check bounds!!
-    print_r($_POST);
     $src_index = $_POST["source"];
     if($src_index < 0 or $src_index > count($devices) - 1) {
         echo "ERROR: invalid source";
