@@ -2,13 +2,26 @@
 
 $DEFAULT_VENDOR = "Cisco"; // options: Cisco
 $DEFAULT_CONNECTION = "sshv2";  // options: telnet or sshv2
-$DEFAULT_USERNAME = "ssh-user";
-$DEFAULT_PASSWORD = "password";
+$DEFAULT_USERNAME = "<username>";
+$DEFAULT_PASSWORD = "<password>";
 
+# leave this alone
 $device_cfg = array();
+
+# add these four lines for each router you want to give access to.
 $device_cfg[] = array(
-    "hostname" => "10.211.55.44",
-    "description" => "Kenny",
+    "hostname" => "10.1.0.1",
+    "description" => "Atlanta, GA",
+);
+
+$device_cfg[] = array(
+    "hostname" => "10.1.1.1",
+    "description" => "Denver, CO",
+);
+
+$device_cfg[] = array(
+    "hostname" => "10.1.2.1",
+    "description" => "San Francisco, CA",
 );
 
 ?>

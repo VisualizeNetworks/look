@@ -1,5 +1,5 @@
 <?php
-include("lg.php");
+include("look.php");
 ?>
 <HTML>
 <HEAD>

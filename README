@@ -1,0 +1,25 @@
+look - A PHP Looking Glass that supports Telnet and SSHv2.
+
+------------
+ABOUT
+------------
+look is a simple set of PHP scripts that can be installed on your network
+and configured to connect to your routers and execute various commands.  At
+this point, it supports connection to Cisco devices via Telnet and SSHv2.
+SSHv2 is highly recommended.
+
+------------
+INSTALLATION
+------------
+1.  Install PHP, PECL, and the ssh2 PECL package.  The ssh2 package can be found here:
+
+http://pecl.php.net/package/ssh2
+
+2.  Copy all of look's files into a directory on your webserver.
+
+3.  Edit the look-cfg.php and setup your environment.  If you're adding a lot of routers
+that all are from the same vendor, use the same type of connection, and same authentication,
+then set the "$DEFAULT_" variables first.  After that, add an array similar to the example
+for each device you want to make available on the webpage.
+
+4.  Test it out!

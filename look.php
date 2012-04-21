@@ -1,9 +1,9 @@
 <?php
 
 # get config file
-include("lg-cfg.php");
+include("lookg-cfg.php");
 
-include("lg-device-cisco.php");
+include("lookg-cisco.php");
 
 class DeviceCommand {
     private static $last_id = -1;
