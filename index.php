@@ -132,7 +132,7 @@ include("look.php");
 <DIV ID="lg_results">
     Results:
     <BR>
-    <DIV ID="ajax_busy"><IMG SRC="ipLoader.gif" BORDER="0"></DIV>
+    <DIV ID="ajax_busy"><IMG SRC="loading.gif" BORDER="0"></DIV>
     <BR>
     <PRE ID="result_area"></PRE>
 </DIV>
