@@ -1,9 +1,17 @@
 <?php
 include("look.php");
+
 ?>
 <HTML>
 <HEAD>
+    <LINK REL="stylesheet" TYPE="text/css" HREF="css/shadows.css">
     <STYLE TYPE="text/css">
+       BODY {
+            background-image: url('img/background.png');
+            padding:20px 0 30px;
+            color:#333;
+        }
+
         #look_table {
             width: 750px;
             text-align: center;
@@ -50,7 +58,7 @@ include("look.php");
             margin: 0px;
         }
     </STYLE>
-    <SCRIPT LANGUAGE="JavaScript" SRC="jquery-1.7.2.min.js"></SCRIPT>
+    <SCRIPT LANGUAGE="JavaScript" SRC="js/jquery-1.7.2.min.js"></SCRIPT>
     <SCRIPT LANGUAGE="JavaScript">
         $(document).ready(function() {
             $("#submit_button").click(function() {
@@ -96,9 +104,12 @@ include("look.php");
     </SCRIPT>
 </HEAD>
 <BODY>
-<DIV ID="look_table">
+<!--
+<DIV ID="look_table" CLASS="drop-shadow curved curved-hz-2">
+-->
+<DIV ID="look_table" CLASS="box">
     <DIV ID="look_title_block">
-        <A HREF="https://github.com/drewpc/look" TARGET="_new"><IMG SRC="logo.png" BORDER="0"></A>
+        <A HREF="https://github.com/drewpc/look" TARGET="_new"><IMG SRC="img/logo.png" BORDER="0"></A>
     </DIV>
     <FORM NAME="look">
     <TABLE ID="look_form_table">
@@ -147,9 +158,7 @@ include("look.php");
     </FORM>
     <DIV ID="look_results">
         Results:
-        <BR>
-        <DIV ID="ajax_busy"><IMG SRC="loading.gif" BORDER="0"></DIV>
-        <BR>
+        <DIV ID="ajax_busy"><IMG SRC="img/loading.gif" BORDER="0"></DIV>
         <PRE ID="result_area"></PRE>
     </DIV>
 </DIV>

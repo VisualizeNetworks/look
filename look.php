@@ -221,8 +221,17 @@ class BaseDevice {
     }
 }
 
+function sort_by_description($a, $b) {
+    if ($a["description"] == $b["description"]) {
+        return 0;
+    }
+    return ($a["description"] < $b["description"]) ? -1 : 1;
+}
+
+uasort($device_cfg, "sort_by_description");
+
 $devices = array();
-foreach($device_cfg as $device) {
+foreach($device_cfg as $device_index => $device) {
     $hostname = $device["hostname"];
 
     if(array_key_exists("vendor", $device)) {
@@ -251,7 +260,7 @@ foreach($device_cfg as $device) {
 
     switch(strtolower($vendor)) {
         case "cisco":
-            $devices[] = new CiscoDevice($hostname, $device["description"], $connection, $username, $password);
+            $devices[$device_index] = new CiscoDevice($hostname, $device["description"], $connection, $username, $password);
             break;
     }
 }
@@ -259,6 +268,7 @@ foreach($device_cfg as $device) {
 // the page was called from the HTML form
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     // check bounds!!
+    print_r($_POST);
     $src_index = $_POST["source"];
     if($src_index < 0 or $src_index > count($devices) - 1) {
         echo "ERROR: invalid source";
