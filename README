@@ -17,9 +17,11 @@ http://pecl.php.net/package/ssh2
 
 2.  Copy all of look's files into a directory on your webserver.
 
-3.  Edit the look-cfg.php and setup your environment.  If you're adding a lot of routers
-that all are from the same vendor, use the same type of connection, and same authentication,
-then set the "$DEFAULT_" variables first.  After that, add an array similar to the example
-for each device you want to make available on the webpage.
+3.  Copy the look-cfg-ini.php.sample file to look-cfg-ini.php.
 
-4.  Test it out!
+4.  Edit the look-cfg.php and setup your environment.  Presumably you're going to setup
+one username/password on all of your routers and use the same connection type to connect to
+all of them.  Setup the default vendor, username, password, and connection values to
+match your most common scenarios.  Then, add the individual routers at the end.
+
+5.  Test it out!
