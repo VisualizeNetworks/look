@@ -1,5 +1,11 @@
 <?php
 
+;==================================
+; Defaults
+;==================================
+; All items in this section are default settings and are
+; required.
+
 [defaults]
 ; Options are: "Cisco" or "Juniper"
 vendor = "Cisco"
@@ -30,22 +36,33 @@ commands[] = "show route"
 commands[] = "show bgp route"
 commands[] = "show eigrp topology"
 
+;==================================
+; Devices
+;==================================
+; Each section is a unique device.  Use the hostname/ip address
+; for the section name (in between the [ ]) and put hostname,
+; description, vendor, connection, username, or password values
+; as appropriate.  If you don't list them in the device section,
+; then the defaults from above will be used.
+
 ["10.211.55.44"]
 hostname = "10.211.55.44"
-description = "r1"
+description = "Denver, CO"
 
 ["192.168.255.2"]
 hostname = "192.168.255.2"
-description = "r2"
+description = "Atlanta, GA"
 
 ["10.211.55.2"]
 hostname = "10.211.55.2"
-description = "Mac OS X"
+description = "San Francisco, CA"
 vendor = "Juniper"
 
 ["10.211.55.15"]
-hostname = "10.211.55.15"
-description = "Atlanta, GA"
-vendor = "blah"
+hostname = "10.211.66.15"
+description = "Boulder, CO"
+username = "blah"
+password = "blah"
+connection = "telnet"
 
 ?>
