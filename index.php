@@ -89,6 +89,11 @@ include("look.php");
                     url: "look.php",
                     data: dataString,
                     success: function(result) {
+                        if(result.substr(0, 6) == "ERROR:") {
+                            $('#result_area').css("color", "#FF0000");
+                        } else {
+                            $('#result_area').css("color", "#00AA00");
+                        }
                         $('#result_area').html(result);
                     }
                 });

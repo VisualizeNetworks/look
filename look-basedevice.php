@@ -41,7 +41,6 @@ class BaseDevice {
     function query_router($cmd_id, $arg_type, $arg) {
         $ret = "";
         if(array_key_exists($cmd_id, $this->device_cmds)) {
-            print_r($this->device_cmds);
             $cmd_obj = $GLOBALS["all_cmds"][$cmd_id];
             // validate argument
             if($cmd_obj->valid_arg($arg_type, $arg)) {
@@ -53,11 +52,11 @@ class BaseDevice {
                 $ret = $this->$func($cmd_obj->get_command($arg));
             } else {
                 // invalid argument
-                $ret = "invalid argument: $arg";
+                $ret = "ERROR: invalid argument '$arg'";
             }
         } else {
             // command doesn't apply for this router
-            $ret = "command does not apply for this router";
+            $ret = "ERROR: command does not apply for this router";
         }
         return $ret;
     }
