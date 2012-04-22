@@ -1,0 +1,13 @@
+* Add SNMPv3 support:
+    This will require some research and extra processing by
+    the looking glass server, but should work okay for most
+    commands.  Not sure if ping or traceroute will work though.
+
+* Add Quagga support:
+    I'm thinking about having the software SSH to a machine and then
+    run vtysh to get the commands.  We'll see how that plays out.
+
+* IPv6 support:
+    Should be pretty straight forward, I just need to test it in
+    GNS3 to make sure I know what the pitfalls are.  This will
+    also change some of the IP validation routines.
