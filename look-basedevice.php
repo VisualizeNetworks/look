@@ -1,5 +1,9 @@
 <?php
 
+# BaseDevice package file.
+# This class is the parent for each vendor class (like Cisco, Juniper, etc).
+# BaseDevice does most of the processing while the vendor specific
+# classes just register commands.
 class BaseDevice {
     public $hostname;
     public $decription;
@@ -45,7 +49,7 @@ class BaseDevice {
             // validate argument
             if($cmd_obj->valid_arg($arg_type, $arg)) {
                 if($arg_type == "device") {
-                    $arg = $GLOBALS["device_cfg"][$arg]["hostname"];
+                    $arg = $GLOBALS["all_devices"][$arg]["hostname"];
                 }
 
                 $func = $this->query_function;

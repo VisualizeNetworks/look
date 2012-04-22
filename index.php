@@ -12,6 +12,14 @@ include("look.php");
             color:#333;
         }
 
+        PRE {
+            white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+            white-space: -pre-wrap; /* Opera */
+            white-space: -o-pre-wrap; /* Opera */
+            white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+            word-wrap: break-word; /* IE 5.5+ */
+        }
+
         #look_table {
             width: 750px;
             text-align: center;
@@ -127,7 +135,7 @@ include("look.php");
             <TD CLASS="look_form_body_cell">
                 <SELECT NAME="source" ID="source">
                 <?php
-                    foreach($device_cfg as $key => $value) {
+                    foreach($all_devices as $key => $value) {
                         echo "            <OPTION VALUE=\"$key\">" . $value["description"] . "</OPTION>\n";
                     }
                 ?>
@@ -147,7 +155,7 @@ include("look.php");
                 <INPUT TYPE="radio" NAME="target_type" ID="target_device_radio" VALUE="device">&nbsp;&nbsp;&nbsp;Device:
                 <SELECT NAME="target_device" ID="target_device" onChange="$('input#target_device_radio').prop('checked', true);">
                 <?php
-                    foreach($device_cfg as $key => $value) {
+                    foreach($all_devices as $key => $value) {
                         echo "            <OPTION VALUE=\"$key\">" . $value["description"] . "</OPTION>\n";
                     }
                 ?>
