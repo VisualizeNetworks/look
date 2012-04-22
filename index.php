@@ -82,7 +82,7 @@ include("look.php");
                         break;
                 }
 
-                var dataString = 'source='+ source + '&cmd=' + cmd + '&target_type=' + target_type + "&target=" + target;
+                var dataString = 'form=' + 'ajax' + '&source='+ source + '&cmd=' + cmd + '&target_type=' + target_type + "&target=" + target;
 
                 $.ajax({
                     type: "POST",

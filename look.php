@@ -4,12 +4,14 @@
 include("look-cfg.php");
 
 include("look-cisco.php");
+include("look-juniper.php");
 
 class DeviceCommand {
     private static $last_id = -1;
     public $id;
     public $display;
     public $cmd;
+    public $subnet_mask;
     public $args = array();
 
     function __construct($display) {
@@ -23,16 +25,38 @@ class DeviceCommand {
         $this->cmd = $cmd;
     }
 
-    function set_ip_argument() {
+    function get_command($arg) {
+        if($this->subnet_with_mask != NULL) {
+            $arg = $this->subnet_with_mask;
+        }
+        return str_replace("%arg%", $arg, $this->cmd);
+    }
+
+    function allow_ip_argument() {
         $this->args[] = "ip";
     }
 
-    function set_subnet_argument() {
+    function allow_subnet_argument($type = "bits") {
         $this->args[] = "subnet";
+
+        // should be "bits" or "full".  Bits means /24 but full will be converted to 255.255.255.0
+        $this->subnet_mask_type = $type;
     }
 
-    function set_device_argument() {
+    function allow_device_argument() {
         $this->args[] = "device";
+    }
+
+    function make_subnet_mask($bits) {
+        $network = 0xFFFFFFFF << (32 - $bits);
+        $mask = array(
+            ($network & 0xFF000000) >> 24,
+            ($network & 0x00FF0000) >> 16,
+            ($network & 0x0000FF00) >> 8,
+            ($network & 0x000000FF),
+        );
+
+        return implode(".", $mask);
     }
 
     function valid_arg($arg_type, $arg) {
@@ -95,6 +119,10 @@ class DeviceCommand {
             return false;
         }
 
+        if($this->subnet_mask_type == "full") {
+            $this->subnet_with_mask = $network . " " . $this->make_subnet_mask($mask);
+        }
+
         return true;
     }
 }
@@ -152,10 +180,8 @@ class BaseDevice {
                     $arg = $GLOBALS["devices"][$arg]->hostname;
                 }
 
-                $cmd_text = $cmd_obj->cmd . " " . $arg;
-
                 $func = $this->query_function;
-                $ret = $this->$func($cmd_text);
+                $ret = $this->$func($cmd_obj->get_command($arg));
             } else {
                 // invalid argument
                 $ret = "invalid argument: $arg";
@@ -262,11 +288,15 @@ foreach($device_cfg as $device_index => $device) {
         case "cisco":
             $devices[$device_index] = new CiscoDevice($hostname, $device["description"], $connection, $username, $password);
             break;
+
+        case "juniper":
+            $devices[$device_index] = new JuniperDevice($hostname, $device["description"], $connection, $username, $password);
+            break;
     }
 }
 
 // the page was called from the HTML form
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if($_SERVER['REQUEST_METHOD'] == 'POST' and $_POST["form"] == "ajax") {
     // check bounds!!
     $src_index = $_POST["source"];
     if($src_index < 0 or $src_index > count($devices) - 1) {
