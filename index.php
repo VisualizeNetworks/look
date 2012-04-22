@@ -1,36 +1,57 @@
 <?php
 include("look.php");
+
 ?>
 <HTML>
 <HEAD>
+    <LINK REL="stylesheet" TYPE="text/css" HREF="css/shadows.css">
     <STYLE TYPE="text/css">
-        #lg_table {
-            width: 760px;
-            margin: 0px;
-            padding: 10px;
+       BODY {
+            background-image: url('img/background.png');
+            padding:20px 0 30px;
+            color:#333;
         }
 
-        #submit_area {
-            vertical-align: middle;
+        PRE {
+            white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+            white-space: -pre-wrap; /* Opera */
+            white-space: -o-pre-wrap; /* Opera */
+            white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+            word-wrap: break-word; /* IE 5.5+ */
+        }
+
+        #look_table {
+            width: 750px;
             text-align: center;
         }
 
-        .step {
-            width: 250px;
+        #look_title_block {
+            text-align: center;
+        }
+
+        #look_form_table {
+            width: 750px;
             margin: 0px;
-            padding: 0px;
-            display: inline-block;
+            padding: 10px;
+            border: 1px black;
+            text-align: left;
             vertical-align: middle;
+        }
+
+        .look_form_header_cell {
+        }
+
+        .look_form_body_cell {
         }
 
         #submit_area {
-            padding: 10px;
-            display: block;
-            vertical-align: middle;
+            height: 50px;
+            text-align: center;
         }
 
-        #lg_results {
+        #look_results {
             vertical-align: top;
+            text-align: left;
         }
 
         #result_area {
@@ -45,7 +66,7 @@ include("look.php");
             margin: 0px;
         }
     </STYLE>
-    <SCRIPT LANGUAGE="JavaScript" SRC="jquery-1.7.2.min.js"></SCRIPT>
+    <SCRIPT LANGUAGE="JavaScript" SRC="js/jquery-1.7.2.min.js"></SCRIPT>
     <SCRIPT LANGUAGE="JavaScript">
         $(document).ready(function() {
             $("#submit_button").click(function() {
@@ -54,7 +75,7 @@ include("look.php");
 
                 var source = $("select#source :selected").val();
                 var cmd = $("input#cmd:checked").val();
-                var target_type = $("input#target_type:checked").val();
+                var target_type = $("input[name=target_type]:checked").val();
 
                 var target = "";
                 switch(target_type) {
@@ -69,13 +90,18 @@ include("look.php");
                         break;
                 }
 
-                var dataString = 'source='+ source + '&cmd=' + cmd + '&target_type=' + target_type + "&target=" + target;
+                var dataString = 'form=' + 'ajax' + '&source='+ source + '&cmd=' + cmd + '&target_type=' + target_type + "&target=" + target;
 
                 $.ajax({
                     type: "POST",
-                    url: "lg.php",
+                    url: "look.php",
                     data: dataString,
                     success: function(result) {
+                        if(result.substr(0, 6) == "ERROR:") {
+                            $('#result_area').css("color", "#FF0000");
+                        } else {
+                            $('#result_area').css("color", "#00AA00");
+                        }
                         $('#result_area').html(result);
                     }
                 });
@@ -91,52 +117,63 @@ include("look.php");
     </SCRIPT>
 </HEAD>
 <BODY>
-<DIV ID="lg_table">
-<FORM>
-    <DIV ID="step1" CLASS="step">
-        Source:<BR>
-        <SELECT NAME="source" ID="source">
-        <?php
-            foreach($device_cfg as $key => $value) {
-                echo "            <OPTION VALUE=\"$key\">" . $value["description"] . "</OPTION>\n";
-            }
-        ?>
-        </SELECT>
+<!--
+<DIV ID="look_table" CLASS="drop-shadow curved curved-hz-2">
+-->
+<DIV ID="look_table" CLASS="box">
+    <DIV ID="look_title_block">
+        <A HREF="https://github.com/drewpc/look" TARGET="_new"><IMG SRC="img/logo.png" BORDER="0"></A>
     </DIV>
-    <DIV ID="step2" CLASS="step">
-        Command:<BR>
-        <?php
-            foreach($all_cmds as $cmd) {
-                echo "<INPUT TYPE=\"radio\" NAME=\"cmd\" ID=\"cmd\" VALUE=\"" . $cmd->id . "\"/>" . $cmd->display . "<BR>\n";
-            }
-        ?>
+    <FORM NAME="look">
+    <TABLE ID="look_form_table">
+        <TR CLASS="look_form_row">
+            <TH CLASS="look_form_header_cell">Source:</TH>
+            <TH CLASS="look_form_header_cell">Command:</TH>
+            <TH CLASS="look_form_header_cell">Target:</TH>
+        </TR>
+        <TR CLASS="look_form_row">
+            <TD CLASS="look_form_body_cell">
+                <SELECT NAME="source" ID="source">
+                <?php
+                    foreach($all_devices as $key => $value) {
+                        echo "            <OPTION VALUE=\"$key\">" . $value["description"] . "</OPTION>\n";
+                    }
+                ?>
+                </SELECT>
+            </TD>
+            <TD CLASS="look_form_body_cell">
+            <?php
+                foreach($all_cmds as $cmd) {
+                    echo "<INPUT TYPE=\"radio\" NAME=\"cmd\" ID=\"cmd\" VALUE=\"" . $cmd->id . "\"/>&nbsp;&nbsp;&nbsp;" . $cmd->display . "<BR>\n";
+                }
+            ?>
+            </TD>
+            <TD CLASS="look_form_body_cell">
+                <INPUT TYPE="radio" NAME="target_type" ID="target_ip_radio" VALUE="ip">&nbsp;&nbsp;&nbsp;IP Address: <INPUT TYPE="text" NAME="target" ID="target_ip" onFocus="$('input#target_ip_radio').prop('checked', true);"><BR>
+                <INPUT TYPE="radio" NAME="target_type" ID="target_subnet_radio" VALUE="subnet">&nbsp;&nbsp;&nbsp;Subnet: <INPUT TYPE="text" NAME="target" ID="target_subnet" onFocus="$('input#target_subnet_radio').prop('checked', true);"><BR>
+                <I>Example: 192.168.1.0/24</I><BR>
+                <INPUT TYPE="radio" NAME="target_type" ID="target_device_radio" VALUE="device">&nbsp;&nbsp;&nbsp;Device:
+                <SELECT NAME="target_device" ID="target_device" onChange="$('input#target_device_radio').prop('checked', true);">
+                <?php
+                    foreach($all_devices as $key => $value) {
+                        echo "            <OPTION VALUE=\"$key\">" . $value["description"] . "</OPTION>\n";
+                    }
+                ?>
+                </SELECT>
+            </TD>
+        </TR>
+        <TR CLASS="look_form_row">
+            <TD ID="submit_area" CLASS="look_form_body_cell" COLSPAN="3">
+                <INPUT TYPE="button" NAME="submit" ID="submit_button" VALUE="Execute Command">
+            </TD>
+        </TR>
+    </TABLE>
+    </FORM>
+    <DIV ID="look_results">
+        Results:
+        <DIV ID="ajax_busy"><IMG SRC="img/loading.gif" BORDER="0"></DIV>
+        <PRE ID="result_area"></PRE>
     </DIV>
-    <DIV ID="step3" CLASS="step">
-        Target:<BR>
-        IP address: <INPUT TYPE="radio" NAME="target_type" ID="target_type" VALUE="ip"><INPUT TYPE="text" NAME="target" ID="target_ip"><BR>
-        Subnet: <INPUT TYPE="radio" NAME="target_type" ID="target_type" VALUE="subnet"><INPUT TYPE="text" NAME="target" ID="target_subnet"><BR>
-        Example: 192.168.1.0/24<BR>
-        Device: <INPUT TYPE="radio" NAME="target_type" ID="target_type" VALUE="device">
-        <SELECT NAME="target_device" ID="target_device">
-        <?php
-            foreach($device_cfg as $key => $value) {
-                echo "            <OPTION VALUE=\"$key\">" . $value["description"] . "</OPTION>\n";
-            }
-        ?>
-        </SELECT>
-    </DIV>
-    <DIV ID="submit_area">
-        <INPUT TYPE="button" NAME="submit" ID="submit_button" VALUE="submit">
-    </DIV>
-</FORM>
-<DIV ID="lg_results">
-    Results:
-    <BR>
-    <DIV ID="ajax_busy"><IMG SRC="ipLoader.gif" BORDER="0"></DIV>
-    <BR>
-    <PRE ID="result_area"></PRE>
-</DIV>
-</DIV>
 </DIV>
 </BODY>
 </HTML>
