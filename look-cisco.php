@@ -22,6 +22,7 @@ class CiscoDevice extends BaseDevice {
                     $this->device_cmds[$key] = $cmd->display;
                     $cmd->set_command("show ip route %arg%");
                     $cmd->allow_ip_argument();
+                    $cmd->allow_subnet_argument("full");
                     $cmd->allow_device_argument();
                     break;
 
