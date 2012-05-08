@@ -60,9 +60,7 @@ class BaseDevice {
             }
         } else {
             // command doesn't apply for this router
-            print_r($this->device_cmds, $ret);
-            print_r("command id: $cmd_id\n", $ret);
-            $ret .= "ERROR: command does not apply for this router";
+            $ret = "ERROR: command does not apply for this router";
         }
         return $ret;
     }
