@@ -74,7 +74,7 @@ include("look.php");
                 $("#result_area").html("");
 
                 var source = $("select#source :selected").val();
-                var cmd = $("input#cmd:checked").val();
+                var cmd = $("input[name=cmd]:checked").val();
                 var target_type = $("input[name=target_type]:checked").val();
 
                 var target = "";
@@ -144,7 +144,7 @@ include("look.php");
             <TD CLASS="look_form_body_cell">
             <?php
                 foreach($all_cmds as $cmd) {
-                    echo "<INPUT TYPE=\"radio\" NAME=\"cmd\" ID=\"cmd\" VALUE=\"" . $cmd->id . "\"/>&nbsp;&nbsp;&nbsp;" . $cmd->display . "<BR>\n";
+                    echo "<INPUT TYPE=\"radio\" NAME=\"cmd\" ID=\"cmd_" . $cmd->id . "\" VALUE=\"" . $cmd->id . "\"/>&nbsp;&nbsp;&nbsp;" . $cmd->display . "<BR>\n";
                 }
             ?>
             </TD>
